@@ -9,9 +9,6 @@
         <Logger name="curso.java.hibernate" level="debug" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Logger name="curso.java.hibernate" level="error" additivity="false">
-            <AppenderRef ref="LogToConsole"/>
-        </Logger>
         <Root level="error">
             <AppenderRef ref="LogToConsole"/>
         </Root>

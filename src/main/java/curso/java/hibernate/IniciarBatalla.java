@@ -23,47 +23,65 @@ public class IniciarBatalla {
 		 	int turno = 0;
 		 	int ataque = 0;
 		 	
+		 	//Buscamos si los dos guerreros existen
 	        EntityManager em = JpaUtil.getEntityManager();
 	        Guerrero guerrero1 = em.find(Guerrero.class, id1);
 	        Guerrero guerrero2 = em.find(Guerrero.class, id2);
 	        
-	        if(guerrero1 != null) {
-	        	System.out.println("\n"+guerrero1+"\n"+guerrero2);
+	        //Si existen los guerreros los muestra, sino sale un error warning 
+	        if(guerrero1 != null && guerrero2 != null) {
+	        	System.out.println("");
+	        	logger.debug(guerrero1);
+	        	logger.debug(guerrero2);
 	        }else {
 	        	logger.warn("El Alumno con id "+id1+" no existe");
 	        	logger.warn("El Alumno con id "+id2+" no existe");
 	        }
 	        
 	        
-	        
+	        //Bucle do que sirve para seguir con la batalla hasta que algun guerrrero se quede sin puntos de vida       
 	        do {
-	        	System.out.print("Empieza el turno: "+contadorTurnos);
+	        	//ContadorTurnos sirve para saber los turnos totales de la batalla,
+	        	//Turno sirve para saber a quien le toca atacar y a quien defender
+	        	logger.debug("Empieza el turno: "+contadorTurnos);
 	        	turno++;
+	        	
 	        	//Si el turno es 1 ataca el primer guerrero
 	        	if (turno == 1) {
-	        		System.out.println(" atacando el guerrero "+guerrero1.getNombre());
+	        		logger.debug("Ataca el guerrero "+guerrero1.getNombre());
+	        		//Ataca el guerrero1
 	        		ataque = guerrero1.Atacar(guerrero1.getPuntosAtaque());
+	        		//Se defiende el guerrero2 del ataque
 	        		guerrero2.Defender(ataque ,guerrero2.getPuntosDefensa() ,guerrero2.getPuntosVida());
 	        		turno++;
+	        		
 	        	//Si el turno es 2 ataca el segundo guerrero
 	        	}else if (turno == 3) {
-	        		System.out.println(" atacando el guerrero "+guerrero2.getNombre());
+	        		logger.debug("Ataca el guerrero "+guerrero2.getNombre());
+	        		//Ataca el guerrero2
 	        		ataque = guerrero2.Atacar(guerrero2.getPuntosAtaque());
+	        		//Se defiende el guerrero1 del ataque
 	        		guerrero1.Defender(ataque ,guerrero1.getPuntosDefensa() ,guerrero1.getPuntosVida());
 	        		turno = 0;
 	        	}
+	        	//Sumamos los turnos totales al finalizar este 
 	        	contadorTurnos++;
-	        	System.out.println("-Vida restante del guerrero "+guerrero1.getNombre()+"["+guerrero1.getPuntosVida()+"]");
-	        	System.out.println("-Vida restante del guerrero "+guerrero2.getNombre()+"["+guerrero2.getPuntosVida()+"]\n");
+	        	
+	        	//Mostramos la vida restante de los guerreros
+	        	logger.debug("-Vida restante del guerrero "+guerrero1.getNombre()+"["+guerrero1.getPuntosVida()+"]");
+	        	logger.debug("-Vida restante del guerrero "+guerrero2.getNombre()+"["+guerrero2.getPuntosVida()+"]\n");
 	        }while(guerrero1.getPuntosVida() > 0 && guerrero2.getPuntosVida() > 0);
+	        
+	        //Se muestra el guerrero que no haya llegado a los 0 puntos de vida
 	        if(guerrero1.getPuntosVida() > 0 ) {
-	        	System.out.println("\nEl guerrero"+guerrero1.getNombre()+" ha ganado el combate con un total de "+guerrero1.getPuntosVida()+" puntos de vida");
+	        	logger.debug("El guerrero"+guerrero1.getNombre()+" ha ganado el combate con un total de "+guerrero1.getPuntosVida()+" puntos de vida");
 	        }else {
-	        	System.out.println("\nEl guerrero "+guerrero2.getNombre()+" ha ganado el combate con un total de "+guerrero2.getPuntosVida()+" puntos de vida");
+	        	logger.debug("El guerrero "+guerrero2.getNombre()+" ha ganado el combate con un total de "+guerrero2.getPuntosVida()+" puntos de vida");
 	        }
+	        
 	        em.close();
 	        System.out.println("\n");
-	        logger.debug("Final busqueda");
+	        logger.debug("Final de la batalla");
 	}
 }
 

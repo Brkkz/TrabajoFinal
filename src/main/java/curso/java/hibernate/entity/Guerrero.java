@@ -1,10 +1,16 @@
 package curso.java.hibernate.entity;
 
 import jakarta.persistence.*;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import curso.java.hibernate.IGuerrero;
+import curso.java.hibernate.IniciarBatalla;
 
 @Entity
 @Table(name="TB_GUERRERO")
+
 public class Guerrero extends IGuerrero{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -115,18 +121,18 @@ public class Guerrero extends IGuerrero{
                 ", Puntos Vida= " + puntosVida;   
 	}
 
-
+	/*
+	 * Se hace herencia de la interfaz y hacemos el metodo para la defensa del ataque
+	 */
 	@Override
 	public void Defender(int ataque, int defensa,int vida) {
 		super.Defender(ataque, defensa,vida);
+		
 		defensa*=(int)(Math.random()*5 + 1);
-		//System.out.println(ataque);
-		
 		int resultado = ataque - defensa;
-		
+		//Si el ataque es mayor que la defensa se quita vida, sino se para el ataque
 		if(resultado > 0) {
 			vida -= resultado;
-			//System.out.println(vida);
 			this.setPuntosVida(vida);
 		}else {
 			System.out.println("Se ha parado el ataque");
